@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
 
-{% block title %}
-    Home Page
-{% endblock %}}
+{% block title %} Home Page {% endblock %}}
 
 {% block body %}
 <div class="container">
@@ -14,7 +12,7 @@
           <p class="lead">Here you can find with their detail information like ISBN, year, author, etc. You can see the rating for the book you desired after you logged in here.</p>
           <p></p>
           <p class="lead">
-            <a class="btn btn-primary btn-lg" href="#" role="button">Login</a>
+            <a class="btn btn-primary btn-lg" href="{{url_for("login")}}" role="button">Login</a>
         </div>
     </div>
     <div class="col-md-6">

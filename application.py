@@ -33,3 +33,12 @@ def register():
 
     # if POST, validate and commit to database
     return render_template("register.html")
+
+@app.route("/login")
+def login():
+    #if GET
+        #if logged in, redirect to /search
+        #else Get the login information
+    #if POST
+        #search database for credentials and allow/deny login
+    return render_template("login.html")
