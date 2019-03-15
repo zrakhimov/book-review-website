@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, render_template
+from flask import Flask, session, render_template, request
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -30,11 +30,25 @@ def index():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     # if GET, show the registration form
-
+    if request.method == "GET":
+        return render_template("register.html")
     # if POST, validate and commit to database
-    return render_template("register.html")
+    elif request.method == "POST":
+        #if form values are empty show error
+        if not request.form.get("first_name"):
+            return render_template("error.html", message="Must provide First Name")
+        elif not request.form.get("last_name"):
+            return render_template("error.html", message="Must provide Last Name")
+        elif  not request.form.get("email"):
+            return render_template("error.html", message="Must provide E-mail")
+        elif not request.form.get("password1") or not request.form.get("password2"):
+            return render_template("error.html", message="Must provide password")
+        elif request.form.get("password1") != request.form.get("password2"):
+            return render_template("error.html", message="Password does not match")
+        return render_template("error.html", message="Success")
 
-@app.route("/login")
+
+@app.route("/login", methods=["GET", "POST"])
 def login():
     #if GET
         #if logged in, redirect to /search
