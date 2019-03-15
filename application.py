@@ -38,7 +38,7 @@ def register():
 
     # if POST, validate and commit to database
 
-    if request.method == "POST":
+    else:
         #if form values are empty show error
         if not request.form.get("first_name"):
             return render_template("error.html", message="Must provide First Name")
@@ -67,11 +67,14 @@ def register():
             db.commit()
 
             #success - redirect to login
-            return redirect("/login")
+            return redirect("/")
 
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+
+    # Forget any user_id
+    session.clear()
     #if GET
         #if logged in, redirect to /search
         #else Get the login information
