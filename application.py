@@ -23,4 +23,13 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
+    # if Logged in, redirect to /search
+    #else index.html
     return render_template("index.html")
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    # if GET, show the registration form
+
+    # if POST, validate and commit to database
+    return render_template("register.html")
