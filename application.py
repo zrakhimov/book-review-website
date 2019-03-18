@@ -1,10 +1,10 @@
 import os
 
-from flask import Flask, session, render_template, redirect, request
+from flask import Flask, session, render_template, redirect, request, flash, url_for
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-
+from functools import wraps
 from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
@@ -22,12 +22,24 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
+##Helper
+def login_required(f):
+    """
+    Decorate routes to require login.
 
+    http://flask.pocoo.org/docs/0.12/patterns/viewdecorators/
+    """
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("email") is None:
+            return redirect(url_for("login"))
+        return f(*args, **kwargs)
+    return decorated_function
+
+
+@login_required
 @app.route("/")
 def index():
-    # if Logged in, redirect to /search
-
-    #else index.html
     return render_template("index.html")
 
 @app.route("/register", methods=["GET", "POST"])
@@ -98,21 +110,27 @@ def login():
             return  render_template("error.html", message = "Invalid password")
         # Remember which user has logged in
         session["email"] = db_email;
-        session["logged_in"]
-        return render_template("error.html", message="SUCCESSFUL LOGIN!")
+        session["logged_in"] = True;
+        flash("you are now logged in")
+        return redirect(url_for("search"))
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
 
+
 @app.route("/logout")
+@login_required
 def logout():
     # Forget any user_id
     session.clear()
+    flash("You have been logged out")
 
     # Redirect user to login index
-    return redirect("/")
+    return redirect(url_for("index"))
+
 
 @app.route("/search")
+@login_required
 def search():
     return render_template("search.html")
