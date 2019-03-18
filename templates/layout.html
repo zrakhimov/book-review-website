@@ -10,19 +10,29 @@
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
-    <!-- Navigation Bar - font: white, bg: blue -->
-    <nav class="navbar navbar-dark bg-primary">
-      <a class="navbar-brand" href="{{url_for("index")}}">Book Review</a>
-        <!-- ml-auto = move nav items to right-->
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <!-- TODO: Jinja2 if not logged in -->
-              <a class="nav-link" href="{{url_for("register")}}"><button class="btn btn-outline-light" type="submit">Sign Up</button></a>
-            <!-- ELSE
-                Show logOut <name>
-            -->
-          </li>
-        </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{{url_for("index")}}">Book Review</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ml-auto">
+            {% if session.logged_in %}
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Welcome, {{session.firstname}}</a>
+            </li>
+            <li class="nav-item">
+              <li><a href="{{url_for("logout")}}"><button class="btn btn-outline-light" type="submit">Logout</button></a></li>
+            </li>
+            {% else %}
+            <li class="nav-item">
+              <a href="{{url_for("register")}}"><button class="btn btn-outline-light" type="submit">Sign Up</button></a>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
     </nav>
       {% block body %}
       {% endblock %}

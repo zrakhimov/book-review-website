@@ -22,7 +22,7 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
-##Helper
+## Helper
 def login_required(f):
     """
     Decorate routes to require login.
@@ -36,8 +36,6 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-
-@login_required
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -73,15 +71,13 @@ def register():
             # try to commit to database, raise error if any
             try:
                 db.execute("INSERT INTO users (firstname, lastname, email, password) VALUES (:firstname, :lastname, :email, :password)",
-                               {"firstname": email, "lastname": last_name, "email":email, "password": generate_password_hash(password)})
+                               {"firstname": first_name, "lastname": last_name, "email":email, "password": generate_password_hash(password)})
             except Exception as e:
                 return render_template("error.html", message=e)
 
-            db.commit()
-
             #success - redirect to login
-            return redirect("/")
-
+            db.commit()
+            return redirect(url_for("login"))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -100,18 +96,19 @@ def login():
             return render_template("error.html", message="must provide password")
 
         # Query database for email and password
-        Q = db.execute("SELECT email, password FROM users WHERE email LIKE :email", {"email": form_email}).fetchone()
+        Q = db.execute("SELECT * FROM users WHERE email LIKE :email", {"email": form_email}).fetchone()
+
+        # User exists ?
         if Q is None:
             return render_template("error.html", message="User doesn't exists")
-        db_email = Q.email
-        db_hash_pass = Q.password
-
-        if not check_password_hash(db_hash_pass, form_password):
+        # Valid password ?
+        if not check_password_hash( Q.password, form_password):
             return  render_template("error.html", message = "Invalid password")
+
         # Remember which user has logged in
-        session["email"] = db_email;
-        session["logged_in"] = True;
-        flash("you are now logged in")
+        session["email"] = Q.email
+        session["firstname"] = Q.firstname
+        session["logged_in"] = True
         return redirect(url_for("search"))
 
     # User reached route via GET (as by clicking a link or via redirect)
@@ -124,7 +121,6 @@ def login():
 def logout():
     # Forget any user_id
     session.clear()
-    flash("You have been logged out")
 
     # Redirect user to login index
     return redirect(url_for("index"))
