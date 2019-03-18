@@ -26,6 +26,7 @@ db = scoped_session(sessionmaker(bind=engine))
 @app.route("/")
 def index():
     # if Logged in, redirect to /search
+
     #else index.html
     return render_template("index.html")
 
@@ -86,7 +87,7 @@ def login():
         elif not form_password:
             return render_template("error.html", message="must provide password")
 
-        # Query database for username
+        # Query database for email and password
         Q = db.execute("SELECT email, password FROM users WHERE email LIKE :email", {"email": form_email}).fetchone()
         if Q is None:
             return render_template("error.html", message="User doesn't exists")
@@ -97,8 +98,21 @@ def login():
             return  render_template("error.html", message = "Invalid password")
         # Remember which user has logged in
         session["email"] = db_email;
+        session["logged_in"]
         return render_template("error.html", message="SUCCESSFUL LOGIN!")
 
     # User reached route via GET (as by clicking a link or via redirect)
     else:
         return render_template("login.html")
+
+@app.route("/logout")
+def logout():
+    # Forget any user_id
+    session.clear()
+
+    # Redirect user to login index
+    return redirect("/")
+
+@app.route("/search")
+def search():
+    return render_template("search.html")
