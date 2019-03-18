@@ -75,9 +75,30 @@ def login():
 
     # Forget any user_id
     session.clear()
-    #if GET
-        #if logged in, redirect to /search
-        #else Get the login information
-    #if POST
-        #search database for credentials and allow/deny login
-    return render_template("login.html")
+
+    if request.method == "POST":
+        form_email = request.form.get("email")
+        form_password = request.form.get("password")
+
+        # Ensure username and password was submitted
+        if not form_email:
+            return render_template("error.html", message="must provide username")
+        elif not form_password:
+            return render_template("error.html", message="must provide password")
+
+        # Query database for username
+        Q = db.execute("SELECT email, password FROM users WHERE email LIKE :email", {"email": form_email}).fetchone()
+        if Q is None:
+            return render_template("error.html", message="User doesn't exists")
+        db_email = Q.email
+        db_hash_pass = Q.password
+
+        if not check_password_hash(db_hash_pass, form_password):
+            return  render_template("error.html", message = "Invalid password")
+        # Remember which user has logged in
+        session["email"] = db_email;
+        return render_template("error.html", message="SUCCESSFUL LOGIN!")
+
+    # User reached route via GET (as by clicking a link or via redirect)
+    else:
+        return render_template("login.html")
