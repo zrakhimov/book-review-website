@@ -19,9 +19,9 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 # Set up database (heroku)
-#engine = create_engine(os.getenv("DATABASE_URL"))
+engine = create_engine(os.getenv("DATABASE_URL"))
 '''Local database'''
-engine = create_engine("postgres://postgres:postgres@localhost:5432/postgres")
+#engine = create_engine("postgres://postgres:postgres@localhost:5432/postgres")
 db = scoped_session(sessionmaker(bind=engine))
 
 ## Helper
