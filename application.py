@@ -126,10 +126,19 @@ def logout():
     return redirect(url_for("index"))
 
 
-@app.route("/search")
+@app.route("/search", methods=["GET","POST"])
 @login_required
 def search():
-    return render_template("search.html")
+    if request.method == "GET":
+        return render_template("search.html")
+    else:
+        query = request.form.get("input-search")
+        if query is None:
+            render_template("error.html", message="Search field can not be empty!")
+        rows = db.execute("SELECT * FROM books WHERE isbn LIKE :isbn OR title LIKE :query OR author LIKE :query", {"query": "%" + query + "%", "isbn": query}).fetchall();
+
+        return render_template("error.html", message=rows)
+
 
 @app.route("/details")
 @login_required
