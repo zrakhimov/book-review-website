@@ -134,13 +134,16 @@ def search():
     else:
         query = request.form.get("input-search")
         if query is None:
-            render_template("error.html", message="Search field can not be empty!")
-        result = db.execute("SELECT * FROM books WHERE LOWER(isbn) LIKE :isbn OR LOWER(title) LIKE :query OR LOWER(author) LIKE :query", {"query": "%" + query.lower() + "%", "isbn": query}).fetchall();
+            return render_template("error.html", message="Search field can not be empty!")
+        try:
+            result = db.execute("SELECT * FROM books WHERE LOWER(isbn) LIKE :isbn OR LOWER(title) LIKE :query OR LOWER(author) LIKE :query", {"query": "%" + query.lower() + "%", "isbn": query}).fetchall();
+        except Exception as e:
+            return render_template("error.html", message=e)
 
         return render_template("list.html", result=result)
 
 
-@app.route("/details")
+@app.route("/details/<int:bookid>")
 @login_required
-def details():
-    return render_template("details.html")
+def details(bookid):
+    return render_template("details.html", bookid=bookid)
