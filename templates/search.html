@@ -3,5 +3,22 @@
 {% block title %}Search{% endblock %}
 
 {% block body %}
-    You are logged in. This is search page
+<div class="container">
+    <div class="row">
+        <div class="col-md-2"><!--Placeholder left--></div>
+        <div class="col-md-8">
+            <div class="search-form">
+                    <form class="form-inline justify-content-center" action="{{url_for("details")}}" method="post">
+                    <h2 class="card-title" style="display:block;">Search for a Book</h4>
+
+                    <div class="form-group">
+                        <input name="input-search" class="form-control form-control-lg mr-sm-2" placeholder="ISBN, title or author" type="search" required>
+                        <button type="submit" class="btn btn-primary my-2 my-sm-0 btn-lg">Search</button>
+                    </div> <!-- form-group// -->
+                  </form>
+              </div>
+        </div>
+        <div class="col-md-2"><!--Placeholder right--></div>
+    </div>
+</div>
 {% endblock %}

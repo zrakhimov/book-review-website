@@ -130,3 +130,8 @@ def logout():
 @login_required
 def search():
     return render_template("search.html")
+
+@app.route("/details")
+@login_required
+def details():
+    return render_template("details.html")
