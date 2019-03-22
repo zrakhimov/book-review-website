@@ -106,6 +106,7 @@ def login():
             return  render_template("error.html", message = "Invalid password")
 
         # Remember which user has logged in
+        session["user_id"] = Q.userid
         session["email"] = Q.email
         session["firstname"] = Q.firstname
         session["logged_in"] = True
@@ -151,4 +152,21 @@ def details(bookid):
         result = db.execute("SELECT * from books WHERE bookid = :bookid", {"bookid": bookid}).fetchone()
         if not result:
             return render_template("error.html", message="Invalid book id")
-        return render_template("details.html", result=result)
+        return render_template("details.html", result=result, bookid=bookid)
+    else:
+        user_comment = request.form.get("comments")
+        user_rating = request.form.get("rating")
+
+        if not user_comment:
+            return render_template("error.html", message="Comment section cannot be empty")
+
+        # try to commit to database, raise error if any
+        try:
+            db.execute("INSERT INTO reviews (user_id, book_id, rating, comment) VALUES (:user_id, :book_id, :rating, :comment)",
+                           {"user_id": session["user_id"], "book_id": bookid, "rating":user_rating, "comment": user_comment})
+        except Exception as e:
+            return render_template("error.html", message=e)
+
+        #success - redirect to details page
+        db.commit()
+        return redirect(url_for("details", bookid=bookid))

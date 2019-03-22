@@ -16,27 +16,29 @@
               <label>Year</label>
               <li class="list-group-item">{{result.year}}</li>
           </ul>
-        </div>
-        <div class="col-md-6">
-          <form>
+          <hr style="mar: 20px 0 10px 0;">
+          <form action="{{url_for('details', bookid=bookid)}}" method="post">
             <div class="form-group">
                <label for="Rating">Rating</label>
-               <select class="form-control" id="Rating">
-                 <option>1</option>
-                 <option>2</option>
-                 <option>3</option>
-                 <option>4</option>
-                 <option>5</option>
+               <select class="form-control" id="Rating" name="rating">
+                 <option value="1">1</option>
+                 <option value="2">2</option>
+                 <option value="3">3</option>
+                 <option value="4">4</option>
+                 <option selected value="5">5</option>
                </select>
              </div>
              <div class="form-group">
                <label for="Comments">Comments</label>
-               <textarea class="form-control" id="Comments" rows="8"></textarea>
+               <textarea class="form-control" id="Comments" rows="8" name="comments" required></textarea>
              </div>
              <div class="form-group">
                 <button type="submit" class="btn btn-primary">Post</button>
              </div>
           </form>
+        </div>
+        <div class="col-md-6">
+
         </div>
   </div>
 
