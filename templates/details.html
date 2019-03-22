@@ -6,6 +6,7 @@
   <div class="container" >
     <div class="row" id="details">
         <div class="col-md-6">
+          <h2>Book Info</h2>
           <ul class="list-group">
               <label>ISBN</label>
               <li class="list-group-item">{{result.isbn}}</li>
@@ -16,7 +17,21 @@
               <label>Year</label>
               <li class="list-group-item">{{result.year}}</li>
           </ul>
-          <hr style="mar: 20px 0 10px 0;">
+          <hr>
+          <h2>Comments</h2>
+          {% for item in comment_list %}
+          <div class="card" style="width: 25rem;">
+          <div class="card-body">
+            <h5 class="card-title">{{item.firstname}} {{item.lastname}} rated <b>{{item.rating}}</b></h5>
+            <h6 class="card-subtitle mb-2 text-muted">@{{item.email}}</h6>
+            <p class="card-text">{{item.comment}}</p>
+            <a href="#" class="card-link">Upvote</a>
+            <a href="#" class="card-link">Downvote</a>
+          </div>
+          </div>
+          {% endfor %}
+          <hr>
+
           <form action="{{url_for('details', bookid=bookid)}}" method="post">
             <div class="form-group">
                <label for="Rating">Rating</label>

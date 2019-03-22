@@ -150,9 +150,10 @@ def search():
 def details(bookid):
     if request.method == "GET":
         result = db.execute("SELECT * from books WHERE bookid = :bookid", {"bookid": bookid}).fetchone()
+        comment_list = db.execute("SELECT u.firstname, u.lastname, u.email, r.rating, r.comment from reviews r JOIN users u ON u.userid=r.user_id").fetchall()
         if not result:
             return render_template("error.html", message="Invalid book id")
-        return render_template("details.html", result=result, bookid=bookid)
+        return render_template("details.html", result=result, comment_list=comment_list , bookid=bookid)
     else:
         user_comment = request.form.get("comments")
         user_rating = request.form.get("rating")
