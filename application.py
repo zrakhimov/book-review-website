@@ -144,10 +144,11 @@ def search():
         return render_template("list.html", result=result)
 
 
-@app.route("/details/<int:bookid>")
+@app.route("/details/<int:bookid>", methods=["GET","POST"])
 @login_required
 def details(bookid):
-    result = db.execute("SELECT * from books WHERE bookid = :bookid", {"bookid": bookid}).fetchone()
-    if not result:
-        return render_template("error.html", message="Invalid book id")
-    return render_template("details.html", result=result)
+    if request.method == "GET":
+        result = db.execute("SELECT * from books WHERE bookid = :bookid", {"bookid": bookid}).fetchone()
+        if not result:
+            return render_template("error.html", message="Invalid book id")
+        return render_template("details.html", result=result)
