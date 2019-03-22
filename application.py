@@ -148,4 +148,6 @@ def search():
 @login_required
 def details(bookid):
     result = db.execute("SELECT * from books WHERE bookid = :bookid", {"bookid": bookid}).fetchone()
+    if not result:
+        return render_template("error.html", message="Invalid book id")
     return render_template("details.html", result=result)
