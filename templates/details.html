@@ -4,15 +4,40 @@
 
 {% block body %}
   <div class="container">
-      <ul class="list-group">
-          <label>ISBN</label>
-          <li class="list-group-item">{{result.isbn}}</li>
-          <label>Title</label>
-          <li class="list-group-item">{{result.title}}</li>
-          <label>Author</label>
-          <li class="list-group-item">{{result.author}}</li>
-          <label>Year</label>
-          <li class="list-group-item">{{result.year}}</li>
-      </ul>
+    <div class="row">
+        <div class="col-md-6">
+          <ul class="list-group">
+              <label>ISBN</label>
+              <li class="list-group-item">{{result.isbn}}</li>
+              <label>Title</label>
+              <li class="list-group-item">{{result.title}}</li>
+              <label>Author</label>
+              <li class="list-group-item">{{result.author}}</li>
+              <label>Year</label>
+              <li class="list-group-item">{{result.year}}</li>
+          </ul>
+        </div>
+        <div class="col-md-6">
+          <form>
+            <div class="form-group">
+               <label for="Rating">Rating</label>
+               <select class="form-control" id="Rating">
+                 <option>1</option>
+                 <option>2</option>
+                 <option>3</option>
+                 <option>4</option>
+                 <option>5</option>
+               </select>
+             </div>
+             <div class="form-group">
+               <label for="Comments">Comments</label>
+               <textarea class="form-control" id="Comments" rows="8"></textarea>
+             </div>
+             <div class="form-group">
+                <button type="submit" class="btn btn-primary">Post</button>
+             </div>
+          </form>
+        </div>
   </div>
+
 {% endblock %}
