@@ -1,4 +1,4 @@
-import os
+import os, requests
 
 from flask import Flask, session, render_template, redirect, request, flash, url_for
 from flask_session import Session
@@ -12,7 +12,8 @@ app = Flask(__name__)
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
-elif not os.getenv("KEY")
+elif not os.getenv("KEY"):
+    raise RuntimeError("API KEY is not set")
 
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
@@ -22,6 +23,7 @@ Session(app)
 
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
+key = os.getenv("KEY")
 
 ## Helper
 def login_required(f):
@@ -152,11 +154,19 @@ def details(bookid):
     if request.method == "GET":
         #Get book details
         result = db.execute("SELECT * from books WHERE bookid = :bookid", {"bookid": bookid}).fetchone()
+
+        #Get API data from GoodReads
+        try:
+            goodreads = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": result.isbn})
+        except Exception as e:
+            return render_template("error.html", message = e)
+
         # Get comments particular to one book
         comment_list = db.execute("SELECT u.firstname, u.lastname, u.email, r.rating, r.comment from reviews r JOIN users u ON u.userid=r.user_id WHERE book_id = :id", {"id": bookid}).fetchall()
         if not result:
             return render_template("error.html", message="Invalid book id")
-        return render_template("details.html", result=result, comment_list=comment_list , bookid=bookid)
+            
+        return render_template("details.html", result=result, comment_list=comment_list , bookid=bookid, goodreads=goodreads.json()["books"][0])
     else:
         ######## Check if the user commented on this particular book before ###########
         user_reviewed_before = db.execute("SELECT * from reviews WHERE user_id = :user_id AND book_id = :book_id",  {"user_id": session["user_id"], "book_id": bookid}).fetchone()

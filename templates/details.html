@@ -53,7 +53,13 @@
           </form>
         </div>
         <div class="col-md-6">
-
+            <h2>GoodReads reviews</h2>
+            <ul class="list-group">
+                <label>Average Rating</label>
+                <li class="list-group-item">{{ goodreads["average_rating"] }}</li>
+                <label>Number of Ratings the Work has received</label>
+                <li class="list-group-item">{{ goodreads["work_reviews_count"]}}</li>
+            </ul>
         </div>
   </div>
 
