@@ -1,4 +1,5 @@
-# Book Reviews [![Heroku](https://book-review-website-13032019.herokuapp.com/?app=book-review-website-13032019)]
+# Book Reviews 
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 ## Overview
 
