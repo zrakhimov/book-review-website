@@ -1,6 +1,6 @@
 import os, requests
 
-from flask import Flask, session, render_template, redirect, request, flash, url_for
+from flask import Flask, session, render_template, redirect, request, flash, url_for, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -165,7 +165,7 @@ def details(bookid):
         comment_list = db.execute("SELECT u.firstname, u.lastname, u.email, r.rating, r.comment from reviews r JOIN users u ON u.userid=r.user_id WHERE book_id = :id", {"id": bookid}).fetchall()
         if not result:
             return render_template("error.html", message="Invalid book id")
-            
+
         return render_template("details.html", result=result, comment_list=comment_list , bookid=bookid, goodreads=goodreads.json()["books"][0])
     else:
         ######## Check if the user commented on this particular book before ###########
@@ -189,3 +189,30 @@ def details(bookid):
         #success - redirect to details page
         db.commit()
         return redirect(url_for("details", bookid=bookid))
+
+
+# Create app's API
+@app.route("/api/<string:isbn>")
+@login_required
+def api(isbn):
+    """Return details about a single book in json format"""
+
+    # Make sure ISBN exists in the database
+    try:
+        book = db.execute("SELECT * from books WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
+    except Exception as e:
+        return render_template("error.html", message=e)
+    if book is None:
+        return jsonify({"error": "Invalid ISBN"}), 422
+    # Get GoodReads API datad
+    goodreads = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
+    goodreads_book = goodreads.json()["books"][0]
+    # Return book details in JSON
+    return jsonify({
+            "title": book.title,
+            "author": book.author,
+            "year": book.year,
+            "isbn": book.isbn,
+            "review_count": goodreads_book["work_reviews_count"],
+            "average_score": goodreads_book["average_rating"]
+          })
