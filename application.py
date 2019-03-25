@@ -12,6 +12,7 @@ app = Flask(__name__)
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
+elif not os.getenv("KEY")
 
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
