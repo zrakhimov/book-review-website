@@ -149,12 +149,19 @@ def search():
 @login_required
 def details(bookid):
     if request.method == "GET":
+        #Get book details
         result = db.execute("SELECT * from books WHERE bookid = :bookid", {"bookid": bookid}).fetchone()
+        # Get comments particular to one book
         comment_list = db.execute("SELECT u.firstname, u.lastname, u.email, r.rating, r.comment from reviews r JOIN users u ON u.userid=r.user_id WHERE book_id = :id", {"id": bookid}).fetchall()
         if not result:
             return render_template("error.html", message="Invalid book id")
         return render_template("details.html", result=result, comment_list=comment_list , bookid=bookid)
     else:
+        ######## Check if the user commented on this particular book before ###########
+        user_reviewed_before = db.execute("SELECT * from reviews WHERE user_id = :user_id AND book_id = :book_id",  {"user_id": session["user_id"], "book_id": bookid}).fetchone()
+        if user_reviewed_before:
+            return render_template("error.html", message = "You reviewed this book before!")
+        ######## Proceed to get user comment ###########
         user_comment = request.form.get("comments")
         user_rating = request.form.get("rating")
 
