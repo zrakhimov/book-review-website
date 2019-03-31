@@ -19,8 +19,12 @@
         <div class="collapse navbar-collapse" id="#navbarNav">
           <ul class="navbar-nav ml-auto">
             {% if session.logged_in %}
+
             <li class="nav-item active">
               <h6 class="nav-link">Welcome, {{session.firstname}}</h6>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-outline-light btn-success mr-2" href="{{url_for('search')}}" role="button">Search</a>
             </li>
             <li class="nav-item">
               <li><a href="{{url_for("logout")}}"><button class="btn btn-outline-light float-right" type="submit">Logout</button></a></li>
