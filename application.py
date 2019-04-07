@@ -203,7 +203,7 @@ def api(isbn):
     except Exception as e:
         return render_template("error.html", message=e)
     if book is None:
-        return jsonify({"error": "Invalid ISBN"}), 422
+        return jsonify({"error": "Not Found"}), 404
     # Get GoodReads API datad
     goodreads = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
     goodreads_book = goodreads.json()["books"][0]
