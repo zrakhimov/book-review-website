@@ -9,7 +9,7 @@
           <div class="row">
 
             <div class="col-6">
-              <h2>Book Info</h2>
+              <h1>Book Info</h1>
               <ul class="list-group">
                   <p>ISBN: {{result.isbn}} </p>
                   <p>Title: {{result.title}}</p>
@@ -17,13 +17,22 @@
                   <p>Year: {{result.year}}</p>
               </ul>
             </div>
-            <div class="col-6">
-              <img src="../static/goodreads.jpg" alt="goodreads logo" class="img-fluid">
-              <p>Average Rating: {{ goodreads["average_rating"] }}</p>
-              <p>Number of Ratings the Work has received: {{ goodreads["work_reviews_count"]}}</p>
+
+            <div class="col-6 border-left">
+              <div class="list-group">
+                <img src="../static/goodreads.jpg" alt="goodreads logo" class="img-fluid mb-3">
+                <button type="button" class="btn btn-info mb-3">
+                  Average Rating: <span class="badge badge-light">{{ goodreads["average_rating"] }}</span>
+                </button>
+                <button type="button" class="btn btn-info mb-3">
+                  # of Ratings: <span class="badge badge-light">{{ goodreads["work_reviews_count"]}}</span>
+                </button>
+              </div>
+
             </div>
           </div>
 
+          <hr class="mb-5 mt-5">
           <h2>Comments</h2>
           {% for item in comment_list %}
           <div class="card mb-3">
@@ -38,7 +47,7 @@
               {% endif %}
             </h5>
             <h6 class="card-subtitle mb-2 text-muted"><span class="badge">@{{item.email}}</span></h6>
-            <p class="card-text mt-3">{{item.comment}}</p>
+            <p class="card-text mt-3 alert alert-info">{{item.comment}}</p>
           </div>
           </div>
           {% endfor %}
