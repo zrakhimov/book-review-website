@@ -6,33 +6,39 @@
   <div class="container" >
     <div class="row" id="details">
         <div class="col-6">
-          <h2>GoodReads reviews</h2>
-          <p>Average Rating: {{ goodreads["average_rating"] }}</p>
-          <p>Number of Ratings the Work has received: {{ goodreads["work_reviews_count"]}}</p>
+          <div class="row">
 
-          <h2>Book Info</h2>
-          <ul class="list-group">
-              <p>ISBN: {{result.isbn}} </p>
-              <p>Title: {{result.title}}</p>
-              <p>Author: {{result.author}}</p>
-              <p>Year: {{result.year}}</p>
-          </ul>
-          <hr>
+            <div class="col-6">
+              <h2>Book Info</h2>
+              <ul class="list-group">
+                  <p>ISBN: {{result.isbn}} </p>
+                  <p>Title: {{result.title}}</p>
+                  <p>Author: {{result.author}}</p>
+                  <p>Year: {{result.year}}</p>
+              </ul>
+            </div>
+            <div class="col-6">
+              <img src="../static/goodreads.jpg" alt="goodreads logo" class="img-fluid">
+              <p>Average Rating: {{ goodreads["average_rating"] }}</p>
+              <p>Number of Ratings the Work has received: {{ goodreads["work_reviews_count"]}}</p>
+            </div>
+          </div>
+
           <h2>Comments</h2>
           {% for item in comment_list %}
-          <div class="card mb-3" style="width: 25rem;">
+          <div class="card mb-3">
           <div class="card-body">
-            <h5 class="card-title"><span class="badge badge-info">{{item.firstname}} {{item.lastname}}</span> rated
+            <h5 class="card-title"><span class="badge badge-primary">{{item.firstname}} {{item.lastname}}</span>
               {% if item.rating == 5 %}
-                <span class="badge badge-success">{{item.rating}}</span>
+                <span class="badge badge-success float-right">rated {{item.rating}}</span>
               {% elif item.rating == 4 or item.rating == 3 %}
-                <span class="badge badge-warning">{{item.rating}}</span>
+                <span class="badge badge-warning float-right">rated {{item.rating}}</span>
               {% elif item.rating == 2 or item.rating == 1 %}
-                <span class="badge badge-danger">{{item.rating}}</span>
+                <span class="badge badge-danger float-right">rated {{item.rating}}</span>
               {% endif %}
             </h5>
             <h6 class="card-subtitle mb-2 text-muted"><span class="badge">@{{item.email}}</span></h6>
-            <p class="card-text">{{item.comment}}</p>
+            <p class="card-text mt-3">{{item.comment}}</p>
           </div>
           </div>
           {% endfor %}
