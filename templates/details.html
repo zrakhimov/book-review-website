@@ -5,28 +5,34 @@
 {% block body %}
   <div class="container" >
     <div class="row" id="details">
-        <div class="col-md-6">
+        <div class="col-6">
+          <h2>GoodReads reviews</h2>
+          <p>Average Rating: {{ goodreads["average_rating"] }}</p>
+          <p>Number of Ratings the Work has received: {{ goodreads["work_reviews_count"]}}</p>
+
           <h2>Book Info</h2>
           <ul class="list-group">
-              <label>ISBN</label>
-              <li class="list-group-item">{{result.isbn}}</li>
-              <label>Title</label>
-              <li class="list-group-item">{{result.title}}</li>
-              <label>Author</label>
-              <li class="list-group-item">{{result.author}}</li>
-              <label>Year</label>
-              <li class="list-group-item">{{result.year}}</li>
+              <p>ISBN: {{result.isbn}} </p>
+              <p>Title: {{result.title}}</p>
+              <p>Author: {{result.author}}</p>
+              <p>Year: {{result.year}}</p>
           </ul>
           <hr>
           <h2>Comments</h2>
           {% for item in comment_list %}
-          <div class="card" style="width: 25rem;">
+          <div class="card mb-3" style="width: 25rem;">
           <div class="card-body">
-            <h5 class="card-title">{{item.firstname}} {{item.lastname}} rated <b>{{item.rating}}</b></h5>
-            <h6 class="card-subtitle mb-2 text-muted">@{{item.email}}</h6>
+            <h5 class="card-title"><span class="badge badge-info">{{item.firstname}} {{item.lastname}}</span> rated
+              {% if item.rating == 5 %}
+                <span class="badge badge-success">{{item.rating}}</span>
+              {% elif item.rating == 4 or item.rating == 3 %}
+                <span class="badge badge-warning">{{item.rating}}</span>
+              {% elif item.rating == 2 or item.rating == 1 %}
+                <span class="badge badge-danger">{{item.rating}}</span>
+              {% endif %}
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted"><span class="badge">@{{item.email}}</span></h6>
             <p class="card-text">{{item.comment}}</p>
-            <a href="#" class="card-link">Upvote</a>
-            <a href="#" class="card-link">Downvote</a>
           </div>
           </div>
           {% endfor %}
@@ -52,14 +58,8 @@
              </div>
           </form>
         </div>
-        <div class="col-md-6">
-            <h2>GoodReads reviews</h2>
-            <ul class="list-group">
-                <label>Average Rating</label>
-                <li class="list-group-item">{{ goodreads["average_rating"] }}</li>
-                <label>Number of Ratings the Work has received</label>
-                <li class="list-group-item">{{ goodreads["work_reviews_count"]}}</li>
-            </ul>
+        <div class="col-6">
+
         </div>
   </div>
 

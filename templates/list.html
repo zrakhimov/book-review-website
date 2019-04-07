@@ -3,25 +3,33 @@
 {% block title %}List{% endblock %}
 
 {% block body %}
-<div class="container-fluid">
-  <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">ISBN</th>
-      <th scope="col">Title</th>
-      <th scope="col">Author</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for item in result %}
-    <tr>
-      <td>{{item.isbn}}</td>
-      <td>{{item.title}}</td>
-      <td>{{item.author}}</td>
-      <td><a href= "details/{{item.bookid}}">Details</a></td>
-    </tr>
-    {% endfor %}
-  </tbody>
-  </table>
-</div>
-{% endblock %}
+<div class="container">
+  <div class="row">
+    <div class="col-6">
+      <table class="table .list">
+      <thead>
+        <tr>
+          <th scope="col">ISBN</th>
+          <th scope="col">Title</th>
+          <th scope="col">Author</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in result %}
+        <tr>
+          <td>{{item.isbn}}</td>
+          <td>{{item.title}}</td>
+          <td>{{item.author}}</td>
+          <td><a href= "details/{{item.bookid}}">Details</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      </table>
+    </div>
+    {% endblock %}
+
+    </div>
+    <div class="col-6">
+
+    </div>
+  </div>
