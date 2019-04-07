@@ -1,9 +1,21 @@
+body {
+  background: url("book-min.jpg") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 .login-form, .register-form, .search-form {
   margin-top: 10%;
 }
 
 #details {
   margin-top: 10%;
+}
+
+.row {
+  opacity: 1;
 }
 
 /*# sourceMappingURL=site.css.map */
