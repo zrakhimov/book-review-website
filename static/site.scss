@@ -1,3 +1,5 @@
+
+
 body {
   background: url("book-min.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
@@ -13,6 +15,7 @@ body {
   margin-top: 50%;
 }
 #details {
+  background-color: opacify(white, 0.5);
   margin-top: 10%;
 }
 .card-text {
