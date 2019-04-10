@@ -1,11 +1,15 @@
+$smartphone: "(max-width: 768px)";
+$tablet: "(min-width: 768px)";
+$desktop: "(min-width: 1200px)";
 
-
-body {
-  background: url("book-min.jpg") no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
+@media #{$tablet} {
+  body {
+    background: url("book-min.jpg") no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+  }
 }
 
 .login-form, .register-form, .list {
