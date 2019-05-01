@@ -3,7 +3,11 @@
 
 ## Overview
 
-This web site features 5000 hand picked books allowing users to search, leave reviews for individual books, and see the reviews made by other people. It also uses a third-party API by Goodreads.com, another book review website, to pull ratings from a broader audience. In addition, users are able to query for book details and book reviews programmatically via website's API. Visit live version of the app in this heroku link: https://book-review-website-13032019.herokuapp.com/. Overview of the site on youtoube: https://www.youtube.com/watch?v=uu-D-DMLJMU&feature=youtu.be
+This web site features 5000 hand picked books allowing users to search, leave reviews for individual books, and see the reviews made by other people. It also uses a third-party API by Goodreads.com, another book review website, to pull ratings from a broader audience. In addition, users are able to query for book details and book reviews programmatically via website's API. Visit live version of the app in this heroku link: https://book-review-website-13032019.herokuapp.com/. 
+
+## Overview Video
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/uu-D-DMLJMU/0.jpg)](https://www.youtube.com/watch?v=uu-D-DMLJMU)
 
 # Installation
 
